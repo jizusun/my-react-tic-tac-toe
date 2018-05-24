@@ -3,24 +3,32 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 const Square = (props) => (
-    <button className="square">
+    <button className="square"
+      onClick={props.onClick}
+    >
       {props.value}
     </button>
   )
 
-// class Square extends React.Component {
-//   render() {
-//     return (
-//       <button className="square">
-//         {/* TODO */}
-//       </button>
-//     );
-//   }
-// }
-
 class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null),
+    };
+  }
+
+  handleClick(i) {
+    const squares = this.state.squares.slice();
+    squares[i] = 'X';
+    this.setState({squares: squares});
+  }
+
   renderSquare(i) {
-    return <Square value={i} />;
+    return <Square 
+      value={this.state.squares[i]} 
+      onClick={() => this.handleClick(i)}
+    />;
   }
 
   render() {
@@ -71,3 +79,8 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
+
+
+if (module.hot) {
+  module.hot.accept();
+}
